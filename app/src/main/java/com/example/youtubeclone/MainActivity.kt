@@ -10,13 +10,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Toolbar ကို ဘေးကင်းစွာ ချိတ်ဆက်ခြင်း
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        if (toolbar != null) {
-            setSupportActionBar(toolbar)
+        try {
+            val toolbar = findViewById<Toolbar>(R.id.toolbar)
+            if (toolbar != null) {
+                setSupportActionBar(toolbar)
+                supportActionBar?.title = "YouTube Clone"
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
-        // RecyclerView ကို ချိတ်ဆက်ခြင်း
-        val recyclerViewVideos = findViewById<RecyclerView>(R.id.recyclerViewVideos)
     }
 }
