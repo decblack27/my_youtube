@@ -1,25 +1,22 @@
 package com.example.youtubeclone
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Setup Toolbar
-        setSupportActionBar(findViewById(R.id.toolbar))
+        // Toolbar ကို ဘေးကင်းစွာ ချိတ်ဆက်ခြင်း
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        if (toolbar != null) {
+            setSupportActionBar(toolbar)
+        }
 
-        // Find RecyclerView
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewVideos)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        // Example: Open WebYouTubeActivity on startup or handle click
-        // You can customize your video list adapter here
+        // RecyclerView ကို ချိတ်ဆက်ခြင်း
+        val recyclerViewVideos = findViewById<RecyclerView>(R.id.recyclerViewVideos)
     }
 }
