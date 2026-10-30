@@ -4,7 +4,7 @@
     <application
         android:icon="@android:drawable/ic_menu_compass"
         android:label="YouTubeClone"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         android:supportsRtl="true">
         
         <activity
