@@ -8,35 +8,41 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var webView: WebView
+    private var webView: WebView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        try {
+            setContentView(R.layout.activity_main)
 
-        // Toolbar ချိတ်ဆက်ခြင်း
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        if (toolbar != null) {
-            setSupportActionBar(toolbar)
-            supportActionBar?.title = "YouTube"
+            // Toolbar ချိတ်ဆက်ခြင်း
+            val toolbar = findViewById<Toolbar>(R.id.toolbar)
+            if (toolbar != null) {
+                setSupportActionBar(toolbar)
+                supportActionBar?.title = "YouTube"
+            }
+
+            // WebView ကို ဘေးကင်းစွာ ချိတ်ဆက်ပြီး YouTube ဖွင့်ခြင်း
+            webView = findViewById(R.id.webView)
+            webView?.let { wv ->
+                wv.webViewClient = WebViewClient()
+                
+                val webSettings: WebSettings = wv.settings
+                webSettings.javaScriptEnabled = true
+                webSettings.domStorageEnabled = true
+                webSettings.loadWithOverviewMode = true
+                webSettings.useWideViewPort = true
+
+                wv.loadUrl("https://www.youtube.com")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
-        // WebView ချိတ်ဆက်ပြီး YouTube ဖွင့်ခြင်း
-        webView = findViewById(R.id.webView)
-        webView.webViewClient = WebViewClient() // App ထဲမှာပဲ လင့်ခ်ပွင့်စေရန်
-        
-        val webSettings: WebSettings = webView.settings
-        webSettings.javaScriptEnabled = true // YouTube ဗီဒီယိုများ အလုပ်လုပ်ရန် JavaScript ဖွင့်ပေးခြင်း
-        webSettings.domStorageEnabled = true
-
-        // YouTube လိပ်စာသို့ ဝင်ရောက်ခြင်း
-        webView.loadUrl("https://www.youtube.com")
     }
 
-    // ဖုန်းရဲ့ Back ခလုတ်နှိပ်ရင် Website မှာ နောက်သို့ပြန်သွားရန် (Exit မဖြစ်သွားစေရန်)
     override fun onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack()
+        if (webView != null && webView!!.canGoBack()) {
+            webView!!.goBack()
         } else {
             super.onBackPressed()
         }
