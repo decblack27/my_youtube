@@ -13,37 +13,40 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        try {
+            setContentView(R.layout.activity_main)
 
-        // Toolbar ချိတ်ဆက်ခြင်း
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        if (toolbar != null) {
-            setSupportActionBar(toolbar)
-            supportActionBar?.title = "YouTube Clone"
-        }
+            // Toolbar ချိတ်ဆက်ခြင်း
+            val toolbar = findViewById<Toolbar>(R.id.toolbar)
+            if (toolbar != null) {
+                setSupportActionBar(toolbar)
+                supportActionBar?.title = "YouTube Clone"
+            }
 
-        // WebView ကို ချိတ်ဆက်ခြင်း
-        webView = findViewById(R.id.webView)
-        webView?.let { wv ->
-            // WebViewClient ဖြင့် လင့်ခ်များကို App ထဲမှာပဲ ပွင့်စေရန်
-            wv.webViewClient = WebViewClient()
-            
-            // WebChromeClient ဖြင့် Video များနှင့် JavaScript rendering များကို ပံ့ပိုးပေးရန်
-            wv.webChromeClient = WebChromeClient()
+            // WebView ကို ဘေးကင်းစွာ ချိတ်ဆက်ခြင်း
+            webView = findViewById(R.id.webView)
+            webView?.let { wv ->
+                wv.webViewClient = object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                        url?.let { view?.loadUrl(it) }
+                        return true
+                    }
+                }
+                
+                wv.webChromeClient = WebChromeClient()
 
-            val webSettings: WebSettings = wv.settings
-            webSettings.javaScriptEnabled = true
-            webSettings.domStorageEnabled = true
-            webSettings.databaseEnabled = true
-            webSettings.loadsImagesAutomatically = true
-            webSettings.mediaPlaybackRequiresUserGesture = false // ဗီဒီယိုများ အလိုအလျောက် အလုပ်လုပ်ရန်
-            webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-            
-            // Desktop/Mobile Browser အဖြစ် ဟန်ဆောင်ရန် User-Agent သတ်မှတ်ခြင်း
-            webSettings.userAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                val webSettings: WebSettings = wv.settings
+                webSettings.javaScriptEnabled = true
+                webSettings.domStorageEnabled = true
+                webSettings.databaseEnabled = true
+                webSettings.loadsImagesAutomatically = true
+                webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
-            // YouTube ပင်မစာမျက်နှာ သို့မဟုတ် Embed များကို တိုက်ရိုက်ဖွင့်ခြင်း
-            wv.loadUrl("https://www.youtube.com")
+                // YouTube Mobile site သို့ဝင်ရောက်ခြင်း (Crash မဖြစ်စေရန်)
+                wv.loadUrl("https://m.youtube.com")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
